@@ -3,6 +3,7 @@ package com.zappyware.moviebrowsertv.ui.theme
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.graphics.Color
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.darkColorScheme
@@ -23,7 +24,8 @@ fun MovieBrowserTVTheme(
         darkColorScheme(
             primary = Purple80,
             secondary = PurpleGrey80,
-            tertiary = Pink80
+            tertiary = Pink80,
+            onSurface = Color.White
         )
     } else {
         lightColorScheme(
@@ -37,7 +39,7 @@ fun MovieBrowserTVTheme(
         typography = Typography,
     ) {
         CompositionLocalProvider(
-            LocalColorProvider provides if (isSystemInDarkTheme()) {
+            LocalColorProvider provides if (isInDarkTheme) {
                 DarkColorProvider(MaterialTheme.colorScheme)
             } else {
                 LightColorProvider(MaterialTheme.colorScheme)

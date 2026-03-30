@@ -39,14 +39,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.enableEdgeToEdge(window)
         setContent {
-            enableEdgeToEdge(
-                statusBarStyle = SystemBarStyle.light(
-                    Color.Transparent.value.toInt(), Color.Transparent.value.toInt()
-                ),
-                navigationBarStyle = SystemBarStyle.light(
-                    Color.Transparent.value.toInt(), Color.Transparent.value.toInt()
-                )
-            )
+            enableEdgeToEdge()
             MovieBrowserTVTheme {
                 val backStack = remember { mutableStateListOf<Any>(Landing) }
                 Scaffold { innerPadding ->
@@ -79,28 +72,28 @@ class MainActivity : ComponentActivity() {
                         },
                         transitionSpec = {
                             slideInHorizontally(
-                                animationSpec = tween(1000),
+                                animationSpec = tween(AnimationDuration),
                                 initialOffsetX = { it }
                             ) togetherWith slideOutHorizontally(
-                                animationSpec = tween(1000),
+                                animationSpec = tween(AnimationDuration),
                                 targetOffsetX = { -it }
                             )
                         },
                         popTransitionSpec = {
-                            fadeIn(tween(1000)) + slideInHorizontally(
-                                animationSpec = tween(1000),
+                            fadeIn(tween(AnimationDuration)) + slideInHorizontally(
+                                animationSpec = tween(AnimationDuration),
                                 initialOffsetX = { -it }
                             ) togetherWith slideOutHorizontally(
-                                animationSpec = tween(1000),
+                                animationSpec = tween(AnimationDuration),
                                 targetOffsetX = { it }
-                            ) + fadeOut(tween(1000))
+                            ) + fadeOut(tween(AnimationDuration))
                         },
                         predictivePopTransitionSpec = {
                             slideInHorizontally(
-                                animationSpec = tween(1000),
+                                animationSpec = tween(AnimationDuration),
                                 initialOffsetX = { -it }
                             ) togetherWith slideOutHorizontally(
-                                animationSpec = tween(1000),
+                                animationSpec = tween(AnimationDuration),
                                 targetOffsetX = { it }
                             )
                         },
@@ -108,5 +101,9 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    companion object {
+        private const val AnimationDuration = 500
     }
 }

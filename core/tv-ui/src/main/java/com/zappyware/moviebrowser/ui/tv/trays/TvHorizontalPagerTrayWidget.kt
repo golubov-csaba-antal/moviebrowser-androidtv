@@ -48,19 +48,19 @@ fun TvHorizontalPagerTrayWidget(
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier
                 .height(48.dp)
-                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .padding(horizontal = 44.dp, vertical = 12.dp)
         )
 
         PositionFocusedItemInLazyLayout(
-            parentFraction = 0.15f,
-            childFraction = 0.5f
+            parentFraction = 0.05f,
+            childFraction = 0f
         ) {
             LazyHorizontalGrid(
                 rows = GridCells.Fixed(1),
                 state = gridState,
                 modifier = Modifier.fillMaxWidth()
                     .height(trayItemHeight.dp),
-                contentPadding = PaddingValues(16.dp, vertical = 0.dp),
+                contentPadding = PaddingValues(44.dp, vertical = 0.dp),
                 horizontalArrangement = Arrangement.spacedBy(24.dp),
             ) {
                 items(tray.widgets.size) { index ->
