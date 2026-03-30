@@ -1,0 +1,119 @@
+package com.zappyware.moviebrowsertv
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.core.view.WindowCompat
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
+import androidx.tv.material3.ExperimentalTvMaterial3Api
+import com.zappyware.moviebrowser.data.widget.MovieWidget
+import com.zappyware.moviebrowser.page.detail.MovieDetailsScreen
+import com.zappyware.moviebrowser.page.landing.LandingScreen
+import com.zappyware.moviebrowser.uikit.navigation.Details
+import com.zappyware.moviebrowser.uikit.navigation.Landing
+import com.zappyware.moviebrowsertv.ui.theme.MovieBrowserTVTheme
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalTvMaterial3Api::class)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        WindowCompat.enableEdgeToEdge(window)
+        setContent {
+            enableEdgeToEdge(
+                statusBarStyle = SystemBarStyle.light(
+                    Color.Transparent.value.toInt(), Color.Transparent.value.toInt()
+                ),
+                navigationBarStyle = SystemBarStyle.light(
+                    Color.Transparent.value.toInt(), Color.Transparent.value.toInt()
+                )
+            )
+            MovieBrowserTVTheme {
+                val backStack = remember { mutableStateListOf<Any>(Landing) }
+                Scaffold(
+                    topBar = {
+                        Toolbar(
+                            backStack = backStack,
+                            title = "Movies",
+                            canGoBack = backStack.size > 1)
+                    }
+                ) { innerPadding ->
+                    NavDisplay(
+                        modifier = Modifier.padding(innerPadding),
+                        backStack = backStack,
+                        onBack = { backStack.removeLastOrNull() },
+                        entryDecorators = listOf(
+                            rememberSaveableStateHolderNavEntryDecorator(),
+                            rememberViewModelStoreNavEntryDecorator(),
+                        ),
+                        entryProvider = entryProvider {
+                            entry<Landing> {
+                                LandingScreen(
+                                    viewModel = hiltViewModel(),
+                                    onDetailsClicked = { selectedMovie ->
+                                        when(selectedMovie) {
+                                            is MovieWidget -> backStack.add(Details(selectedMovie.id, selectedMovie.mediaType))
+                                        }
+                                    },
+                                )
+                            }
+                            entry<Details> {
+                                MovieDetailsScreen(
+                                    viewModel = hiltViewModel(),
+                                    movieId = it.contentId,
+                                    mediaType = it.mediaType,
+                                )
+                            }
+                        },
+                        transitionSpec = {
+                            slideInHorizontally(
+                                animationSpec = tween(1000),
+                                initialOffsetX = { it }
+                            ) togetherWith slideOutHorizontally(
+                                animationSpec = tween(1000),
+                                targetOffsetX = { -it }
+                            )
+                        },
+                        popTransitionSpec = {
+                            fadeIn(tween(1000)) + slideInHorizontally(
+                                animationSpec = tween(1000),
+                                initialOffsetX = { -it }
+                            ) togetherWith slideOutHorizontally(
+                                animationSpec = tween(1000),
+                                targetOffsetX = { it }
+                            ) + fadeOut(tween(1000))
+                        },
+                        predictivePopTransitionSpec = {
+                            slideInHorizontally(
+                                animationSpec = tween(1000),
+                                initialOffsetX = { -it }
+                            ) togetherWith slideOutHorizontally(
+                                animationSpec = tween(1000),
+                                targetOffsetX = { it }
+                            )
+                        },
+                    )
+                }
+            }
+        }
+    }
+}

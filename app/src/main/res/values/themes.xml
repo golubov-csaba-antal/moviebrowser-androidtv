@@ -1,0 +1,4 @@
+<resources>
+
+    <style name="Theme.MovieBrowserTV" parent="Theme.AppCompat.DayNight.NoActionBar" />
+</resources>
