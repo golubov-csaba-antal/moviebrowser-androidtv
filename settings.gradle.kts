@@ -1,3 +1,5 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     repositories {
         google {
@@ -22,5 +24,12 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Movie Browser TV"
+rootProject.name = "MovieBrowserAndroidTV"
 include(":app")
+
+// core
+include(":core:tv-ui")
+
+// pages
+include(":page:landing-page")
+include(":page:detail-page")

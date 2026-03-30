@@ -25,11 +25,11 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import com.zappyware.moviebrowser.data.widget.MovieWidget
-import com.zappyware.moviebrowser.page.detail.MovieDetailsScreen
-import com.zappyware.moviebrowser.page.landing.LandingScreen
-import com.zappyware.moviebrowser.uikit.navigation.Details
-import com.zappyware.moviebrowser.uikit.navigation.Landing
+import com.zappyware.moviebrowser.navigation.Details
+import com.zappyware.moviebrowser.navigation.Landing
 import com.zappyware.moviebrowsertv.ui.theme.MovieBrowserTVTheme
+import com.zappyware.page.detail.DetailsScreen
+import com.zappyware.page.landing.LandingScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -49,14 +49,7 @@ class MainActivity : ComponentActivity() {
             )
             MovieBrowserTVTheme {
                 val backStack = remember { mutableStateListOf<Any>(Landing) }
-                Scaffold(
-                    topBar = {
-                        Toolbar(
-                            backStack = backStack,
-                            title = "Movies",
-                            canGoBack = backStack.size > 1)
-                    }
-                ) { innerPadding ->
+                Scaffold { innerPadding ->
                     NavDisplay(
                         modifier = Modifier.padding(innerPadding),
                         backStack = backStack,
@@ -77,7 +70,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                             entry<Details> {
-                                MovieDetailsScreen(
+                                DetailsScreen(
                                     viewModel = hiltViewModel(),
                                     movieId = it.contentId,
                                     mediaType = it.mediaType,
