@@ -10,7 +10,9 @@ import androidx.tv.material3.darkColorScheme
 import androidx.tv.material3.lightColorScheme
 import com.zappyware.moviebrowser.common.ui.LocalColorProvider
 import com.zappyware.moviebrowser.common.ui.LocalTrayMapper
+import com.zappyware.moviebrowser.common.ui.LocalWidgetMapper
 import com.zappyware.moviebrowser.ui.tv.mapper.TvTrayMapper
+import com.zappyware.moviebrowser.ui.tv.mapper.TvWidgetMapper
 import com.zappyware.moviebrowsertv.ui.theme.colors.DarkColorProvider
 import com.zappyware.moviebrowsertv.ui.theme.colors.LightColorProvider
 
@@ -22,16 +24,17 @@ fun MovieBrowserTVTheme(
 ) {
     val colorScheme = if (isInDarkTheme) {
         darkColorScheme(
+            background = Color.Black,
+            onBackground = Color.White,
             primary = Purple80,
             secondary = PurpleGrey80,
             tertiary = Pink80,
-            onSurface = Color.White
         )
     } else {
         lightColorScheme(
             primary = Purple40,
             secondary = PurpleGrey40,
-            tertiary = Pink40
+            tertiary = Pink40,
         )
     }
     MaterialTheme(
@@ -43,13 +46,11 @@ fun MovieBrowserTVTheme(
                 DarkColorProvider(MaterialTheme.colorScheme)
             } else {
                 LightColorProvider(MaterialTheme.colorScheme)
-            }
+            },
+            LocalTrayMapper provides TvTrayMapper(),
+            LocalWidgetMapper provides TvWidgetMapper(),
         ) {
-            CompositionLocalProvider(
-                LocalTrayMapper provides TvTrayMapper()
-            ) {
-                content()
-            }
+            content()
         }
     }
 }

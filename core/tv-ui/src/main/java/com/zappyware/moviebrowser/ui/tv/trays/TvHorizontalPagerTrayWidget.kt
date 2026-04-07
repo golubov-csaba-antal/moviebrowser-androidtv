@@ -16,11 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.zappyware.moviebrowser.common.ui.LocalColorProvider
 import com.zappyware.moviebrowser.common.ui.LocalWidgetMapper
 import com.zappyware.moviebrowser.common.ui.WidgetMapper
+import com.zappyware.moviebrowser.data.common.Orientation
 import com.zappyware.moviebrowser.data.tray.HorizontalPagerTrayWidget
-import com.zappyware.moviebrowser.data.tray.trayItemHeight
-import com.zappyware.moviebrowser.data.tray.trayItemWidth
 import com.zappyware.moviebrowser.data.widget.Widget
 import com.zappyware.moviebrowser.ui.tv.PositionFocusedItemInLazyLayout
 
@@ -38,17 +38,30 @@ fun TvHorizontalPagerTrayWidget(
 
     val gridState = rememberLazyGridState()
 
-    val trayItemWidth = remember { tray.trayItemWidth }
-    val trayItemHeight = remember { tray.trayItemHeight }
+    val trayItemWidth = remember {
+        when (tray.orientation) {
+            Orientation.Portrait -> 144f
+            Orientation.Landscape -> 270f
+            Orientation.Circular -> 120f
+        }
+    }
+    val trayItemHeight = remember {
+        when (tray.orientation) {
+            Orientation.Portrait -> 196f
+            Orientation.Landscape -> 198f
+            Orientation.Circular -> 120f
+        }
+    }
+
+    val colorProvider = LocalColorProvider.current
 
     Column {
         Text(
             text = tray.title,
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = colorProvider.textColorDark,
             modifier = Modifier
-                .height(48.dp)
-                .padding(horizontal = 44.dp, vertical = 12.dp)
+                .padding(start = 44.dp, end = 44.dp, top = 44.dp, bottom = 12.dp)
         )
 
         PositionFocusedItemInLazyLayout(

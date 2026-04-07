@@ -7,7 +7,7 @@ import com.zappyware.moviebrowser.data.tray.ShowcaseTrayWidget
 import com.zappyware.moviebrowser.data.tray.TrayWidget
 import com.zappyware.moviebrowser.data.widget.Widget
 import com.zappyware.moviebrowser.ui.tv.trays.TvHorizontalPagerTrayWidget
-import com.zappyware.moviebrowser.ui.tv.trays.TvShowcaseTrayWidgetComposable
+import com.zappyware.moviebrowser.ui.tv.trays.TvShowcaseTrayWidget
 import javax.inject.Inject
 
 class TvTrayMapper @Inject constructor() : TrayMapper {
@@ -21,7 +21,7 @@ class TvTrayMapper @Inject constructor() : TrayMapper {
                 )
             }
             is ShowcaseTrayWidget -> {
-                TvShowcaseTrayWidgetComposable(
+                TvShowcaseTrayWidget(
                     tray = tray,
                     onDetailsClicked = onDetailsClicked,
                 )

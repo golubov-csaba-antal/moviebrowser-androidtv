@@ -2,7 +2,6 @@ package com.zappyware.moviebrowsertv
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.core.tween
@@ -16,7 +15,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -24,6 +22,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.tv.material3.ExperimentalTvMaterial3Api
+import androidx.tv.material3.MaterialTheme
 import com.zappyware.moviebrowser.data.widget.MovieWidget
 import com.zappyware.moviebrowser.navigation.Details
 import com.zappyware.moviebrowser.navigation.Landing
@@ -42,7 +41,10 @@ class MainActivity : ComponentActivity() {
             enableEdgeToEdge()
             MovieBrowserTVTheme {
                 val backStack = remember { mutableStateListOf<Any>(Landing) }
-                Scaffold { innerPadding ->
+                Scaffold(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    contentColor = MaterialTheme.colorScheme.onBackground
+                ) { innerPadding ->
                     NavDisplay(
                         modifier = Modifier.padding(innerPadding),
                         backStack = backStack,
